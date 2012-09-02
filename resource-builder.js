@@ -132,7 +132,6 @@ $(document).ready(function(){
       type = true;
       $('.control-group').removeClass('error');
       $('.properties dl dt').removeClass('label label-inverse');
-      //$('.options dl dt').hide();
       $(this).addClass('label label-inverse');
       $('.options dl dt').each(function(i, item){
         if($(item).hasClass($(that).html())) {
@@ -194,6 +193,7 @@ $(document).ready(function(){
 
       $('.description').html(fakeSchema[Prop][$(this).html()].description);
       $('#option_value').val(fakeSchema[Prop][$(this).html()].default);
+      $('#option_value').focus();
 
     });
   //
@@ -215,14 +215,12 @@ $(document).ready(function(){
       t = $('#property_type').val();
       if(n.length === 0) {
         $('#property_name').closest('.control-group').addClass('error');
-        $('#property_name').attr('placeholder', 'is required...')
         return false;
       }
       $('.props .controls').each(function(e, item){
         if($(item).attr('data-name') === property_name){
           $(item).addClass('error');
           $('#property_name').closest('.control-group').addClass('error');
-          $('#property_name').attr('placeholder', 'already exists...')
           f = true;
           return false;
         }
@@ -237,7 +235,7 @@ $(document).ready(function(){
           <table class="table table-bordered table-condensed table-hover">\
             <tr>\
               <th>' + property_name + '</th>\
-              <th><em>' + property_type + '</em></th>\
+              <th>' + property_type + '</th>\
               <th><a class="remove" href="#/remove">X</a></th>\
             </tr>\
           </table>\
@@ -273,18 +271,21 @@ $(document).ready(function(){
 
       if(c.length === 0) {
         $('#option_name').closest('.control-group').addClass('error');
-        $('#option_name').attr('placeholder', 'is required...')
         return false;
       }
 
-      $('table .option').each(function(e, item){
-        var p = $('td', $(this));
-        if(p.get(1).innerHTML === c) {
-          $('#option_name').closest('.control-group').addClass('error');
-          $('#option_name').attr('placeholder', 'already exists...')
-          $(item).addClass('error');
-          f = true;
-          return false;
+      $('.props .controls').each(function(e, item){
+        if($(item).attr('data-name') === property_name){
+          console.log($(item).attr('data-name'), property_name)
+          $('table tr td', $(item)).each(function(e, etem){
+            if($(etem).html() === option_key) {
+              $(item).addClass('error');
+              $('#option_name').closest('.control-group').addClass('error');
+              // TODO: also highlight table rows
+              f = true;
+            }
+          });
+
         }
       });
 
@@ -339,7 +340,7 @@ $(document).ready(function(){
       });
 
       if(current >= s + 1) {
-        alert('no more options to set');
+        //alert('no more options to set');
         return false;
       }
       $('.options dl dt').get(Number(found)).click();
@@ -359,19 +360,33 @@ $(document).ready(function(){
     });
 
     $('table tr').live('click', function(e){
+
       if(e.target.tagName === "A"){
         //
         // Delegate any link clicks somewhere else
         //
         return false;
       }
-      var p = $(this).closest('.prop');
-      p = $('td', p);
-      $('#property_name').val(p.get(0).innerHTML);
-      $('#property_value').val(p.get(1).innerHTML);
-      $('table tr').removeClass('info');
+
+      var tbody = $(this).closest('tbody');
+      var t = $('th', tbody).get(0).innerHTML;
+      var p = $('th', tbody).get(1).innerHTML;
+      /*
       $(this).addClass('info');
-      $('#option_value').focus()
+      */
+      $('#option_value').focus();
+      $('.properties dt').each(function(i, item){
+        if($(item).html() === p) {
+          $(item).click();
+        }
+      });
+
+      setTimeout(function(){
+        $('#property_name').val(t);
+        $('#property_type').val(p);
+
+      }, 1);
+
     });
 
     $('.remove').live("click", function(){
@@ -397,12 +412,13 @@ $(document).ready(function(){
   $('#property_name').val('').focus();
   $('#option_name').val('');
   $('#code').val('Code will generate here...');
+  $('.options dl dt:first').click();
 
     //
     // nextTick...
     //
     setTimeout(function(){
-      $('.options dl dt:first').click();
+      $('#property_name').focus();
     }, 1)
 
   //
