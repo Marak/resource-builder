@@ -1,0 +1,16 @@
+{
+  "name": "resource-builder",
+  "subdomain": "resource",
+  "scripts": {
+    "start": "bin/server"
+  },
+  "version": "0.0.0",
+  "dependencies": {
+    "colors": "*",
+    "http-server": "*",
+    "optimist": "*"
+  },
+  "engines": {
+    "node": "0.8.x"
+  }
+}
