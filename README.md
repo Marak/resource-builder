@@ -1,6 +1,7 @@
 # Nothing to see here, move along
 
 This project is not really ready for review or pull requests.
+# [http://resource.jit.su](http://resource.jit.su)
 
 # TODO
 
