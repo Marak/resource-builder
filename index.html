@@ -31,19 +31,8 @@
     #code {height: 400px; width: 400px;}
     </style>
     <script src="jquery.js"></script>
-    <script src="_.js"></script>
-    
-    <script src="backbone.js"></script>
-
     <script src="resourceful-coder.js"></script>
     <script src="resource-builder.js"></script>
-
-    
-    <script>
-      
-
-    
-    </script>
   </head>
   <body>
     <h1>resource builder</h1>
@@ -145,40 +134,42 @@
           <div class="row-fluid">
             <div class="span4">
               <br/>
+              <h4 class="propTitle">property</h4>
               <form>
                 <div class="control-group">
-                  <label class="control-label" for="property_name"><h4>name</h4></label>
+                  <label class="control-label" for="property_name"><h5>property name</h5></label>
                   <div class="controls">
                     <input name="property_name" id="property_name"/>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label" for="property_type"><h4>type</h4></label>
+                  <label class="control-label" for="property_type"><h5>type</h5></label>
                   <div class="controls">
                     <input placeholder="Type of property..." name="property_type" id="property_type"/>
                   </div>
                 </div>
                 <button name ="addProp" id="addProp" class="btn">Add property</button>
               </form>
+              <h4 class="descTitle">description</h4>
+              <div class="lead description">
+                To begin, please select a type...
+              </div>
+
               <form>
                 <div class="control-group">
-                   <label class="control-label" for="option_name"><h4>option key</h4></label>
+                   <label class="control-label" for="option_name"><h5>key</h5></label>
                    <div class="controls">
                      <input placeholder="Name of the option..." name="option_name" id="option_name"/>
                    </div>
                  </div>
                  <div class="control-group">
-                   <label class="control-label" for="option_value"><h4>option value</h4></label>
+                   <label class="control-label" for="option_value"><h5>value</h5></label>
                    <div class="controls">
                      <input placeholder="Value of option..." name="option_value" id="option_value"/>
                    </div>
                  </div>
                 <button name ="addType" id="addType" class="btn">add option</button>
               </form>
-              <h4>description</h4>
-              <div class="lead description">
-                To begin, please select a type...
-              </div>
             </div>
             <div class="span6">
               <h2>resource</h2>

@@ -19,9 +19,7 @@ var message = {
 };
 
 var conform = {
-  "default": function(val) {
-    return val;
-  },
+  "default": "function(val) { return val; }",
   "description": "value must satisify this custom method"
 };
 
@@ -35,11 +33,8 @@ var fakeSchema = {
     "description": description,
     "format": {
       "default": "",
-      "description": "the description of the property",
-      "formats": {
-        "email": {},
-        "url": {}
-      }
+      "description": "a pre-defined format the value should match",
+      "enum": ["email", "url"]
     },
     "message": message,
     "minLength": {
@@ -146,6 +141,7 @@ $(document).ready(function(){
       });
       $('#property_name').val('');
       $('#property_type').val($(that).html());
+      $('.propTitle').html($(that).html());
 
       $('.options dl dt').hide();
 
@@ -194,12 +190,11 @@ $(document).ready(function(){
       
       
       $('#option_name').val($(this).html());
+      $('.descTitle').html($(this).html());
 
       $('.description').html(fakeSchema[Prop][$(this).html()].description);
       $('#option_value').val(fakeSchema[Prop][$(this).html()].default);
-      
-      
-      
+
     });
   //
   // END properties mouse bindings
@@ -272,6 +267,7 @@ $(document).ready(function(){
       t = $('#option_value').val();
 
       var property_name = $('#property_name').val(),
+          property_type = $('#property_type').val(),
           option_key = $('#option_name').val(),
           option_value =  $('#option_value').val();
 
@@ -306,23 +302,48 @@ $(document).ready(function(){
       });
 
       $('#code').val(coder.code(serializeTable()));
-
       $('#option_value').val('');
-      var x = 0, l = $('.options dl dt').length;
-      $('.options dl dt').each(function(e, item){ 
-        if($(item).hasClass('label-inverse')) { 
-          x = e;
+
+      //
+      // Jump to next option ( if available)
+      //
+      $('.options dl dt.label-inverse').next('dt').click();
+
+      // find current
+      var current = 0;
+      $('.options dl dt').each(function(i, item){
+       if($(item).hasClass('label-inverse')){
+         current = i;
+       }
+      });
+
+      var found = "", count = 0, s = 0;
+      // find potential next
+      $('.options dl dt').each(function(i, item){
+
+        if($(item).html() === property_type) {
+          count++;
+        }
+
+        if(typeof fakeSchema[property_type][$(item).html()] !== 'undefined') {
+          s++;
+        }
+
+        if(i > current) {
+          if(typeof fakeSchema[property_type][$(item).html()] !== 'undefined') {
+            if(found === "") {
+              found = i;
+            }
+          }
         }
       });
 
-      x = Number(x) + 1;
-      if(typeof $('.options dl dt').get(x) !== 'undefined') {
-        $('.options dl dt').get(x).click();
-        if(x > l){
-          $('#property_name').val('');
-          $('#property_name').focus('');
-        }
+      if(current >= s + 1) {
+        alert('no more options to set');
+        return false;
       }
+      $('.options dl dt').get(Number(found)).click();
+
       return false;
     });
   //
@@ -375,9 +396,18 @@ $(document).ready(function(){
   $('.properties dl dt:first').click();
   $('#property_name').val('').focus();
   $('#option_name').val('');
-  setTimeout(function(){
-    $('.options dl dt:first').click();
-  }, 1)
+  $('#code').val('Code will generate here...');
+
+    //
+    // nextTick...
+    //
+    setTimeout(function(){
+      $('.options dl dt:first').click();
+    }, 1)
+
+  //
+  // END Start events
+  //
 
 });
 
