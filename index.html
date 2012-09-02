@@ -28,6 +28,7 @@
     .options dl dt { display: none; }
     .options dl dd { display: none; }
     table tr { cursor: pointer; }
+    .main { display: none; }
     #code {height: 400px; width: 400px;}
     </style>
     <script src="jquery.js"></script>
@@ -37,7 +38,21 @@
   <body>
     <h1>resource builder</h1>
     <div class="container-fluid">
-      <div class="row-fluid">
+      <div class="splash" class="row-fluid">
+        <div class="span10">
+          <br/>
+          <form>
+            <div class="control-group">
+              <label class="control-label" for="property_name"><h2>Start with a name...</h2></label>
+              <div class="controls">
+                <input name="resource_name" id="resource_name" value="Creature"/>
+              </div>
+            </div>
+            <button name ="createResource" id="createResource" class="btn">Create</button>
+          </form>
+        </div>
+      </div>
+      <div class="main" class="row-fluid">
         <div class="span2">
           <!--Sidebar content-->
           
@@ -172,7 +187,7 @@
               </form>
             </div>
             <div class="span6">
-              <h2>resource</h2>
+              <h2 class="resource">Resource</h2>
               <form>
                 <div class="props">
                 </div>

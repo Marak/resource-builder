@@ -3,8 +3,7 @@
   resource-builder.js
 
   working, but not very well built right now, more of a prototype
-
-  should refactor this into viewful views, should be easy...
+  will refactor and clean this up eventually, should be easy...
 
 */
 
@@ -276,7 +275,6 @@ $(document).ready(function(){
 
       $('.props .controls').each(function(e, item){
         if($(item).attr('data-name') === property_name){
-          console.log($(item).attr('data-name'), property_name)
           $('table tr td', $(item)).each(function(e, etem){
             if($(etem).html() === option_key) {
               $(item).addClass('error');
@@ -355,9 +353,6 @@ $(document).ready(function(){
   //
   // Resource table
   //
-    $('table tr').live('mouseover', function(){
-      console.log('ss')
-    });
 
     $('table tr').live('click', function(e){
 
@@ -391,7 +386,6 @@ $(document).ready(function(){
 
     $('.remove').live("click", function(){
       var close = $(this).closest('tr');
-      console.log(close.html(), $('.props tr:first').html())
       if(close.html() === $('.props tr:first').html()) {
         $(this).closest('.property').remove();
       } else {
@@ -406,21 +400,36 @@ $(document).ready(function(){
   //
 
   //
+  // Splash screen
+  //
+  $('#createResource').click(function(){
+    $('.resource').html($('#resource_name').val());
+    $('.splash').hide();
+    $('.main').show();
+    $('.properties dl dt:first').click();
+    $('#property_name').val('').focus();
+    $('#option_name').val('');
+    $('#code').val('Code will generate here...');
+    $('.options dl dt:first').click();
+
+      //
+      // nextTick...
+      //
+      setTimeout(function(){
+        $('#code').val(coder.code(serializeTable()));
+        $('#property_name').focus();
+      }, 1)
+    return false;
+
+  })
+  //
+  // END splash screen
+  //
+
+  //
   // Start events
   //
-  $('.properties dl dt:first').click();
-  $('#property_name').val('').focus();
-  $('#option_name').val('');
-  $('#code').val('Code will generate here...');
-  $('.options dl dt:first').click();
-
-    //
-    // nextTick...
-    //
-    setTimeout(function(){
-      $('#property_name').focus();
-    }, 1)
-
+  $('#resource_name').focus();
   //
   // END Start events
   //
@@ -429,8 +438,8 @@ $(document).ready(function(){
 
 function serializeTable(){
   var resource = {};
-  resource._resource = "Creature";
-  resource.lowerResource = "creature";
+  resource._resource = $('#resource_name').val();
+  resource.lowerResource = $('#resource_name').val().toLowerCase();
   resource.schema = {};
   resource.schema.properties = {};
 
@@ -446,6 +455,5 @@ function serializeTable(){
       }
     })
   });
-  console.log(resource)
   return resource;
 }
